@@ -25,4 +25,3 @@ Follow the steps below to get the project up and running locally.
 
 ```bash
 git clone https://github.com/yourusername/cart-tokopaedi.git
-cd cart-tokopaedi
