@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
     if (err) {
       return res.json({ status: 200, error: true, result });
     } else {
-      return res.json({ status: 200, error: false, data: result });
+      return res.json({ status: 200, error: false, result });
     }
   });
 });
