@@ -33,69 +33,72 @@ router.get("/", (req, res) => {
 });
 
 
-// sebelm nya
-// router.put("/:id", (req, res) => {
-//   const {quantity} = req.body;
-
-//   if (typeof quantity !== "number" || quantity < 0 ) {
-//     return res.json({ status: 400, error: true, message: "invalid quantity"});
-//   }
-//   const sql = `UPDATE cart_items SET quantity = ? WHERE id = ${req.params.id}`;
-//   conn.query(sql, [quantity], (err, result) =>  {
-//     if (err) {
-//       return res.json({ status: 400, error: true, result})
-//     } else {
-//       return res.json({ status: 200, error: false, result})
-//     }
-//   });
-// });
-
-
+// update quantity 
 router.put("/:id", (req, res) => {
-  const { quantity } = req.body;
+  const {quantity} = req.body;
 
-  if (typeof quantity !== "number" || quantity < 0) {
-    return res.json({ status: 400, error: true, message: "Invalid quantity" });
+  if (typeof quantity !== "number" || quantity < 0 ) {
+    return res.json({ status: 400, error: true, message: "invalid quantity"});
   }
-
-  // ambil product_id dari cart_items
-  const getProductIdSql = `SELECT product_id FROM cart_items WHERE id = ${req.params.id}`;
-  conn.query(getProductIdSql, (err, result) => {
-    if (err || result.length === 0) {
-      return res.json({ status: 400, error: true, message: "Cart item not found"});
+  const sql = `UPDATE cart_items SET quantity = ? WHERE id = ${req.params.id}`;
+  conn.query(sql, [quantity], (err, result) =>  {
+    if (err) {
+      return res.json({ status: 400, error: true, result})
+    } else {
+      return res.json({ status: 200, error: false, result})
     }
-    const productId = result[0].product_id;
-
-    // ambil price dri tabel products
-    const getPriceSql = `SELECT price FROM products WHERE id = ${req.params.id}`;
-    conn.query(getPriceSql, [productId], (err, result) => {
-      if (err || result.length === 0) {
-        return res.json({ status: 400, error: true, message: "Product not found"});
-      }
-
-      const price = result[0].price;
-      const totalPrice = price * quantity;
-
-      // ubah quantity
-      const updateCartItemSql = `UPDATE cart_items SET quantity = ? WHERE id = ${req.params.id}`;
-      conn.query(updateCartItemSql, [quantity], (err, result) =>  {
-        if (err) {
-          return res.json({ status: 400, error: true, result})
-        } 
-
-        // // Update total_price di orders berdasarkan cart_id (tapi masih bingung total price nya itu kek, belum masuk konsep nya ke otak awowkwo)
-        // const updateOrderTotalSql = `UPDATE orders SET total_price = ? WHERE id = (SELECT cart_id FROM cart_items WHERE id = ${req.params.id})`;
-        // conn.query(updateOrderTotalSql, [totalPrice], (err, result) => {
-        //   if (err) {
-        //     return res.json({ status: 400, error: true, result });
-        //   }
-
-        return res.json({ status: 200, error: false, result });
-      });
-    });
   });
 });
+
+
+// api untuk setiap update quantity, dimna harga barang * quantity trus di update ke dalam total price pada tabel order
+
+// router.put("/:id", (req, res) => {
+//   const { quantity } = req.body;
+
+//   if (typeof quantity !== "number" || quantity < 0) {
+//     return res.json({ status: 400, error: true, message: "Invalid quantity" });
+//   }
+
+//   // ambil product_id dari cart_items
+//   const getProductIdSql = `SELECT product_id FROM cart_items WHERE id = ${req.params.id}`;
+//   conn.query(getProductIdSql
+// , (err, result) => {
+//     if (err || result.length === 0) {
+//       return res.json({ status: 400, error: true, message: "Cart item not found"});
+//     }
+//     const productId = result[0].product_id;
+
+//     // ambil price dri tabel products
+//     const getPriceSql = `SELECT price FROM products WHERE id = ${req.params.id}`;
+//     conn.query(getPriceSql, [productId], (err, result) => {
+//       if (err || result.length === 0) {
+//         return res.json({ status: 400, error: true, message: "Product not found"});
+//       }
+
+//       const price = result[0].price;
+//       const totalPrice = price * quantity;
+
+//       // ubah quantity
+//       const updateCartItemSql = `UPDATE cart_items SET quantity = ? WHERE id = ${req.params.id}`;
+//       conn.query(updateCartItemSql, [quantity], (err, result) =>  {
+//         if (err) {
+//           return res.json({ status: 400, error: true, result})
+//         } 
+
+//         // Update total_price di orders berdasarkan cart_id (tapi masih salah)
+//         // const updateOrderTotalSql = `UPDATE orders SET total_price = ? WHERE id = (SELECT cart_id FROM cart_items WHERE id = ${req.params.id})`;
+//         // conn.query(updateOrderTotalSql, [totalPrice], (err, result) => {
+//         //   if (err) {
+//         //     return res.json({ status: 400, error: true, result });
+//         //   }
+
+//         return res.json({ status: 200, error: false, result });
+//       });
+//     });
+//   });
 // });
+// // });
 
 
 
