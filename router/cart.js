@@ -51,7 +51,7 @@ router.put("/:id", (req, res) => {
 });
 
 
-// api untuk setiap update quantity, dimna harga barang * quantity trus di update ke dalam total price pada tabel order
+//  untuk setiap update quantity, dimna harga barang * quantity trus di update ke dalam total price pada tabel order
 
 // router.put("/:id", (req, res) => {
 //   const { quantity } = req.body;
@@ -98,7 +98,7 @@ router.put("/:id", (req, res) => {
 //     });
 //   });
 // });
-// // });
+// });
 
 
 
